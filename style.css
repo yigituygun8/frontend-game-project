@@ -1,0 +1,172 @@
+/* CSS reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Share Tech", sans-serif; /* google font */
+    font-style: normal;
+    font-weight: 400;
+}
+
+h1 {
+    color: rgb(42, 63, 227);
+    font-size: 48px;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* full viewport height so that it fills the screen */
+    background-color: black;
+    cursor: pointer;
+}
+
+/* MEMBERS INFO STYLES */
+.outer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 500px;
+    height: 250px;
+    background-color: gray;
+    border-radius: 15px;
+}
+
+.members-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    color: white;
+}
+
+.title {
+    margin-top: 30px;
+    letter-spacing: 4px; /* more readable */
+}
+
+.member-img img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.member-info h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.member-info p {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+/* GAME PLATFORM STYLES */
+.game-platform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-value {font-size: 50px; color: black;}
+.score {font-size: 100px; color: rgb(56, 232, 56);}
+.timer {color: red;}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    height: 500px;
+    border: 1px solid rgb(170, 169, 169);
+}
+
+.tile {
+    width: 25%; /* each tile takes 25% of the container's width */
+    height: 25%; /* same with height */
+    border: 1px solid rgb(170, 169, 169);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.black-tile {
+    background-color: black;
+    animation: fadeInBlack 0.4s ease-out;
+}
+
+@keyframes fadeInBlack {
+    0% {
+        background-color: white;
+    }
+    100% {
+        background-color: black;
+    }
+}
+
+.instruction {
+    position: absolute; /* relative to game-platform */
+    color: rgb(217, 217, 10);
+    top: 50%;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 400px;
+    height: 15px;
+    background-color: cyan;
+    border: 2px solid blue;
+    margin-top: 30px;
+    transition: width 0.1s linear;
+}
+
+.green-fade {
+    background-color: rgb(56, 232, 56);
+    animation: fadeToWhite 0.4s forwards;
+}
+
+@keyframes fadeToWhite {
+    100% {
+        background-color: white;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.4s forwards;
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+    }
+}
