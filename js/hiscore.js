@@ -26,12 +26,16 @@ mainContainer.addEventListener("click", function() {
     }, 1); // CHANGE TO 1000 FOR ACTUAL SECOND INTERVAL - THIS IS FOR TESTING 
 });
 
-
 // global game variables
 let score = 0;
 let timeLeft = 10;
 let gameTimer;
-let pointCounter = 10; // max points
+let pointCounterTimer;
+let pointCounter = 10; // starts from 10, decreases down to 0 in steps of 1, every 100ms
+let hiscore = localStorage.getItem("hiscore") ?? 0; // if not found, use 0
+document.querySelector(".hiscore").textContent = hiscore; // display the loaded data on the page
+let newHiscore;  
+
 
 function startGame() {
     document.querySelector(".game-platform").style.display = "flex"; // game platform becomes visible
@@ -54,19 +58,47 @@ function startGame() {
         document.querySelector(".timer").textContent = timeLeft;
         
         if (timeLeft <= 0) {
-            clearInterval(gameTimer);
             endGame(); // timeLeft reached zero, end game
         }
     }, 1000);
 
+    // point counter interval - decreases every 100ms when game is active
+    pointCounterTimer = setInterval(() => {
+        if(document.querySelector(".instruction").style.display === "none") {
+            pointCounter--;
+            const progressBar = document.querySelector(".progress-bar");
+            progressBar.style.width = (pointCounter * 10) + '%';
+            
+            if (pointCounter < 0) {
+                pointCounter = 10;
+                progressBar.style.width = '100%';
+            }
+        }
+    }, 100);
+
     // add click listeners to tiles
     const tiles = document.querySelectorAll(".tile");
-    tiles.forEach((tile, index) => {
+    tiles.forEach((tile) => {
         tile.addEventListener("click", function() {
             if (this.classList.contains("black-tile")) {
                 handleBlackTileClick(this); // send the clicked tile to the handler
             }
         });
+    });
+}
+
+function initializeGame() {
+    const tilesArr = document.querySelectorAll(".tile");
+    const blackTiles = [];
+
+    while(blackTiles.length < 3) { // create random indices until we have 3 unique
+        const randomIndex = Math.floor(Math.random() * tilesArr.length);
+        if(!blackTiles.includes(randomIndex)) { 
+            blackTiles.push(randomIndex);
+        }
+    }
+    blackTiles.forEach(index => {
+        tilesArr[index].classList.add("black-tile");
     });
 }
 
@@ -82,6 +114,10 @@ function handleBlackTileClick(tile) {
     score += pointCounter;
     document.querySelector(".score").textContent = score;
     
+    // reset point counter and progress bar if black tile is clicked
+    pointCounter = 10;
+    document.querySelector(".progress-bar").style.width = "100%";
+    
     // hide instruction after first click
     document.querySelector(".instruction").style.display = "none";
     
@@ -96,8 +132,6 @@ function handleBlackTileClick(tile) {
         // remove black class
         tile.classList.remove("black-tile");
     }, 400);
-    
-
 }
 
 function addNewBlackTile() {
@@ -117,22 +151,24 @@ function addNewBlackTile() {
 
 function endGame() {
     alert(`Game Over! Your score: ${score}`);
-    // could add high score logic here
-}
+    clearInterval(gameTimer);
+    clearInterval(pointCounterTimer);
 
-function initializeGame() {
-    const tilesArr = document.querySelectorAll(".tile");
-    const blackTiles = [];
+    document.querySelector(".restart-game").style.display = "block"; // show restart message
+    mainContainer.style.cursor = "default";
 
-    while(blackTiles.length < 3) { // create random indices until we have 3 unique
-        const randomIndex = Math.floor(Math.random() * tilesArr.length);
-        if(!blackTiles.includes(randomIndex)) { 
-            blackTiles.push(randomIndex);
-        }
+    // Hiscore Logic
+    newHiscore = Math.max(hiscore, score); // update hiscore if current score is higher
+    if (newHiscore > hiscore) {
+        alert("New Hiscore: " + newHiscore);
+        hiscore = newHiscore;
     }
-    blackTiles.forEach(index => {
-        tilesArr[index].classList.add("black-tile");
-    });
+    else {
+        alert("Time is up! Your Hiscore remains: " + hiscore);
+    }
+    document.querySelector(".hiscore").textContent = hiscore;
+    localStorage.setItem("hiscore", hiscore); // save hiscore to localStorage
 }
+
 
 
