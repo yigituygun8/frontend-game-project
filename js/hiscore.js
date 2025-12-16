@@ -23,7 +23,7 @@ mainContainer.addEventListener("click", function() {
             countDown.remove(); // remove countdown element
             startGame(); // start the game
         }
-    }, 1); // CHANGE TO 1000 FOR ACTUAL SECOND INTERVAL - THIS IS FOR TESTING 
+    }, 1000); 
 });
 
 // global game variables
@@ -32,15 +32,16 @@ let timeLeft = 10;
 let gameTimer;
 let pointCounterTimer;
 let pointCounter = 10; // starts from 10, decreases down to 0 in steps of 1, every 100ms
-let hiscore = localStorage.getItem("hiscore") ?? 0; // if not found, use 0
+let hiscore = localStorage.getItem("hiscore") ?? 0; // use 0 if null
+let gameActive = false; // flag for game state
 document.querySelector(".hiscore").textContent = hiscore; // display the loaded data on the page
-let newHiscore;  
 
 
 function startGame() {
     document.querySelector(".game-platform").style.display = "flex"; // game platform becomes visible
     mainContainer.style.cursor = "pointer";
     mainContainer.style.backgroundColor = "white";
+    gameActive = true; // game is now active
 
     // place 3 random black tiles
     initializeGame();
@@ -124,14 +125,12 @@ function handleBlackTileClick(tile) {
     // reset that clicked tile after animations complete
     setTimeout(() => {
         tile.textContent = "";
-        tile.classList.remove("green-fade", "fade-out");
+        tile.classList.remove("green-fade", "fade-out", "black-tile");
         
-        // add new black tile at a different position
-        addNewBlackTile();
-
-        // remove black class
-        tile.classList.remove("black-tile");
-    }, 400);
+        if (gameActive) {
+            addNewBlackTile();
+        }
+    }, 300);
 }
 
 function addNewBlackTile() {
@@ -150,23 +149,37 @@ function addNewBlackTile() {
 }
 
 function endGame() {
-    alert(`Game Over! Your score: ${score}`);
+    gameActive = false; // stop game immediately
     clearInterval(gameTimer);
     clearInterval(pointCounterTimer);
 
-    document.querySelector(".restart-game").style.display = "block"; // show restart message
+    // endgame UI updates
     mainContainer.style.cursor = "default";
+    
+    // fade out all black tiles
+    const blackTiles = document.querySelectorAll(".black-tile");
+    blackTiles.forEach(tile => tile.classList.add("fade-out-black"));
+    
+    // clear classes after animation 
+    setTimeout(() => {
+        blackTiles.forEach(tile => tile.classList.remove("black-tile", "fade-out-black"));
+    }, 400);
 
-    // Hiscore Logic
-    newHiscore = Math.max(hiscore, score); // update hiscore if current score is higher
-    if (newHiscore > hiscore) {
-        alert("New Hiscore: " + newHiscore);
-        hiscore = newHiscore;
+    if (score > hiscore) {
+        hiscore = score; // update hiscore
+        document.querySelector(".hiscore").textContent = hiscore;
+        document.querySelector(".new-hiscore").style.display = "block";
+        
+        // confetti effect
+        confetti({
+            particleCount: 180,
+            spread: 100,
+            ticks: 300, 
+        });
+    } else {
+        document.querySelector(".time-up").style.display = "block";
     }
-    else {
-        alert("Time is up! Your Hiscore remains: " + hiscore);
-    }
-    document.querySelector(".hiscore").textContent = hiscore;
+    document.querySelector(".restart-game").style.display = "block";
     localStorage.setItem("hiscore", hiscore); // save hiscore to localStorage
 }
 

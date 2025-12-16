@@ -125,6 +125,7 @@ h1 {
     animation: fadeInBlack 0.4s ease-out;
 }
 
+/* for black tiles appearance */
 @keyframes fadeInBlack {
     0% {
         background-color: white;
@@ -134,12 +135,49 @@ h1 {
     }
 }
 
+/* for black tiles disappearance in endGame() */
+@keyframes fadeOutBlack {
+    0% {
+        background-color: black;
+    }
+    100% {
+        background-color: white;
+    }
+}
+
+.fade-out-black {
+    animation: fadeOutBlack 0.4s ease-out;
+}
+
 .instruction {
     position: absolute; /* relative to game-platform */
     color: rgb(217, 217, 10);
     top: 50%;
     font-size: 60px;
     font-weight: bold;
+}
+
+.new-hiscore {
+    position: absolute;
+    text-align: center;
+    color: red;
+    line-height: 1.2;
+    top: 30%;
+    font-size: 90px;
+    font-weight: bold;
+    display: none;
+    text-shadow: 14px 13px 2px rgba(0,0,0,0.15);
+}
+
+.time-up {
+    position: absolute;
+    text-align: center;
+    color: red;
+    top: 40%;
+    font-size: 100px;
+    font-weight: bold;
+    display: none;
+    text-shadow: 14px 13px 2px rgba(0,0,0,0.15);
 }
 
 .progress-bar-container {
