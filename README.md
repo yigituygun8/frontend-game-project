@@ -11,7 +11,8 @@ A game using HTML, CSS, JavaScript, and DOM API. Detailed description in pdf fil
 ## Project Structure
 ```
 /
-├── game.html
+├── html/
+|   └── game.html
 ├── css/
 │   └── style.css
 ├── js/
