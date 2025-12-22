@@ -9,7 +9,6 @@ A game using HTML, CSS, JavaScript, and DOM API. Detailed description in pdf fil
 - JavaScript
 
 ## Project Structure
-```
 /
 ├── html/
 |   └── game.html
@@ -19,7 +18,16 @@ A game using HTML, CSS, JavaScript, and DOM API. Detailed description in pdf fil
 │   └── hiscore.js
 ├── img/
 └── README.md
-```
+
+## Game Images
+### Game Start Screen
+![Members Menu](sample_images/members_menu.png)
+
+### In-Game Screen
+![In-Game Screen](sample_images/initial_state.png)
+![In-Game Screen](sample_images/playing_state.png)
+![In-Game Screen](sample_images/end_timeup.png)
+![In-Game Screen](sample_images/end_hiscore.png)
 
 ## Author
 - Student:  Osman Yiğit Uygun
