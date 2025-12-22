@@ -66,13 +66,12 @@ function startGame() {
     // point counter interval - decreases every 100ms when game is active
     pointCounterTimer = setInterval(() => {
         if(document.querySelector(".instruction").style.display === "none") {
-            pointCounter--;
             const progressBar = document.querySelector(".progress-bar");
             progressBar.style.width = (pointCounter * 10) + '%';
+            pointCounter--;
             
-            if (pointCounter < 0) {
+            if (pointCounter < 0 && gameActive) {
                 pointCounter = 10;
-                progressBar.style.width = '100%';
             }
         }
     }, 100);
@@ -151,7 +150,9 @@ function addNewBlackTile() {
 function endGame() {
     gameActive = false; // stop game immediately
     clearInterval(gameTimer);
-    clearInterval(pointCounterTimer);
+    setTimeout(() => {
+        clearInterval(pointCounterTimer);
+    }, pointCounter * 100); // progress bar will slide to 0% for one last time 
 
     // endgame UI updates
     mainContainer.style.cursor = "default";
